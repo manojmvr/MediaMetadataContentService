@@ -1,0 +1,14 @@
+info:
+    app-name: @project.name@
+    description: @project.description@
+    version: @project.version@
+
+security:
+    basic:
+       enabled: false
+spring:
+    main:
+        banner-mode: "off"
+
+server:
+    port: 9090
