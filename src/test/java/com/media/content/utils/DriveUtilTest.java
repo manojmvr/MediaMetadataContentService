@@ -18,10 +18,10 @@ import java.util.Map;
 public class DriveUtilTest {
 
     private Map<String, Object> getMap(String content) throws IOException {
-        Map<String, Object> responseMap;
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(content, new TypeReference<Map<String, Object>>(){});
     }
+
     @Test
     public void shouldGetContentFromExternalSource() throws IOException {
         String actualResponse = DriveUtil.getMetadataContentFromExternalSource();
