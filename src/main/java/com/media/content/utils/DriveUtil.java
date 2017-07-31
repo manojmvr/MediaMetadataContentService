@@ -23,11 +23,9 @@ import java.net.URL;
 @UtilityClass
 public class DriveUtil {
 
-//    @Value("${metadata.external.address}")
-    private static String metadataExternalAddress = "http://bit.ly/javaassignmentsrc";
+    private static final String METADATA_EXTERNAL_ADDRESS = "http://bit.ly/javaassignmentsrc";
 
-//    @Value("${drive.file.download.address}")
-    private static String driveFileDownloadAddress = "https://drive.google.com/uc?export=download";
+    private static final String DRIVE_FILE_DOWNLOAD_ADDRESS = "https://drive.google.com/uc?export=download";
 
     /**
      * Util method to find the expanded url from the given shortened url
@@ -57,9 +55,9 @@ public class DriveUtil {
 
         HttpResponse<JsonNode> response;
         try {
-            String driveUrl = expandUrl(metadataExternalAddress);
+            String driveUrl = expandUrl(METADATA_EXTERNAL_ADDRESS);
             URI driveFileUri = new URI(driveUrl);
-            String driveDownloadUrl = expandUrl(driveFileDownloadAddress
+            String driveDownloadUrl = expandUrl(DRIVE_FILE_DOWNLOAD_ADDRESS
                     + "&" + driveFileUri.getQuery());
             response = Unirest.get(driveDownloadUrl).asJson();
         }
