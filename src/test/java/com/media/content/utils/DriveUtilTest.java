@@ -29,4 +29,10 @@ public class DriveUtilTest {
         Map<String, Object> expectedResult = TestUtil.getExpectedContentOutput("content.json");
         Assert.assertEquals(actualResult.size(), expectedResult.size());
     }
+
+    @Test
+    public void shouldExpandUrl() throws IOException {
+        Assert.assertEquals("https://drive.google.com/open?id=0BxVV3wqQ8NkLNE1wX0lubWZYSWM",
+                DriveUtil.expandUrl("http://bit.ly/javaassignmentsrc"));
+    }
 }

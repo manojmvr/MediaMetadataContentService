@@ -33,7 +33,7 @@ public class DriveUtil {
      * @param link shortened or redirectable input url
      * @return expandedURL destination url
      */
-    private static String expandUrl(String link) throws IOException {
+    public static String expandUrl(String link) throws IOException {
         URL url = new URL(link);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
         httpURLConnection.setInstanceFollowRedirects(false);
