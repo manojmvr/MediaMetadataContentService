@@ -6,16 +6,12 @@ import com.media.content.enums.Level;
 import com.media.content.exceptions.MetadataContentException;
 import com.media.content.utils.DriveUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import static com.media.content.enums.Level.CENSORED;
 import static com.media.content.enums.Level.UNCENSORED;
@@ -118,28 +114,5 @@ public class ContentMetadataService {
         });
 
         responseMap.put(ENTRIES, filteredEntries);
-    }
-
-    private String readMetadataContentFromExternalSource() {
-        Resource resource = new ClassPathResource("content.json");
-        InputStream resourceInputStream = null;
-        try {
-            resourceInputStream = resource.getInputStream();
-        }
-        catch (IOException e) {
-            log.error("Error in reading input stream from content metadata", e);
-            throw new MetadataContentException(e);
-        }
-
-        StringBuilder result = new StringBuilder("");
-        Scanner scanner = new Scanner(resourceInputStream);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            result.append(line).append("\n");
-        }
-
-        scanner.close();
-
-        return result.toString();
     }
 }
