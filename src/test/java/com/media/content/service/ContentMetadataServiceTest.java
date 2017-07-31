@@ -1,21 +1,14 @@
 package com.media.content.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.media.content.TestUtil;
 import com.media.content.enums.Level;
-import com.media.content.exceptions.MetadataContentException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,7 +27,7 @@ public class ContentMetadataServiceTest {
         Map<String, Object> actualResult =  service.getMetadataContentByLevel(Level.CENSORED);
         assertNotNull(actualResult);
 
-        Map<String, Object> expectedResult = getExpectedContentOutput("censored-content-op.json");
+        Map<String, Object> expectedResult = TestUtil.getExpectedContentOutput("censored-content-op.json");
         assertContentMetadataResults(expectedResult, actualResult);
     }
 
@@ -43,7 +36,7 @@ public class ContentMetadataServiceTest {
         Map<String, Object> actualResult =  service.getMetadataContentByLevel(Level.UNCENSORED);
         assertNotNull(actualResult);
 
-        Map<String, Object> expectedResult = getExpectedContentOutput("uncensored-content-op.json");
+        Map<String, Object> expectedResult = TestUtil.getExpectedContentOutput("uncensored-content-op.json");
         assertContentMetadataResults(expectedResult, actualResult);
     }
 
@@ -59,31 +52,5 @@ public class ContentMetadataServiceTest {
         List<Map<String, Object>> actualMedia = (List<Map<String, Object>>) expectedEntries.get(0).get("media");
         assertEquals(expectedMedia.size(), actualMedia.size());
         assertEquals(expectedMedia.get(0), actualMedia.get(0));
-    }
-
-    private Map<String, Object> getExpectedContentOutput(String fileName) {
-        Resource resource = new ClassPathResource(fileName);
-        InputStream resourceInputStream;
-
-        try {
-            resourceInputStream = resource.getInputStream();
-        } catch (IOException e) {
-            throw new MetadataContentException(e);
-        }
-
-        StringBuilder result = new StringBuilder("");
-        Scanner scanner = new Scanner(resourceInputStream);
-
-        while (scanner.hasNextLine()) {
-            result.append(scanner.nextLine()).append("\n");
-        }
-
-        scanner.close();
-
-        try {
-            return new ObjectMapper().readValue(result.toString(), new TypeReference<Map<String, Object>>(){});
-        } catch (IOException e) {
-            throw new MetadataContentException(e);
-        }
     }
 }

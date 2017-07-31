@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.media.content.enums.Level;
 import com.media.content.exceptions.MetadataContentException;
+import com.media.content.utils.DriveUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -32,9 +32,6 @@ import static com.media.content.enums.Level.UNCENSORED;
 @Slf4j
 public class ContentMetadataService {
 
-    @Value("${metadata.external.address}")
-    private String metadataExternalAddress;
-
     // Keys
     private static final String PEG$CONTENT_CLASSIFICATION = "peg$contentClassification";
     private static final String MEDIA = "media";
@@ -42,24 +39,6 @@ public class ContentMetadataService {
     private static final String ENTRIES = "entries";
     private static final String CENSORED_ENDS_WITH_CHAR = "C";
     private static final String UNCLASSIFIED = "";
-
-
-    //    public String expandUrl() throws IOException {
-    //        URL url = new URL(metadataExternalAddress);
-    //        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
-    //        httpURLConnection.setInstanceFollowRedirects(false);
-    //
-    //        // extract location header containing the actual destination URL
-    //        String expandedURL = httpURLConnection.getHeaderField("Location");
-    //        httpURLConnection.disconnect();
-    //
-    //        return expandedURL;
-    //    }
-
-    //    public JSONObject getMetadataContentByLevel() throws UnirestException, IOException {
-    //        HttpResponse<JsonNode> jsonObject = Unirest.get(expandUrl()).asJson();
-    //        return jsonObject.getBody().getObject();
-    //    }
 
     /***
      *  Gets the content content from the external source.
@@ -69,7 +48,7 @@ public class ContentMetadataService {
      */
     public Map<String, Object> getMetadataContentByLevel(Level level) {
 
-        String metadataContent = readMetadataContentFromExternalSource();
+        String metadataContent = DriveUtil.getMetadataContentFromExternalSource();
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap;
